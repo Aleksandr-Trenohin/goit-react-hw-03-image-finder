@@ -9,4 +9,8 @@ const Button = ({ nextPage }) => {
   );
 };
 
+Button.propTypes = {
+  nextPage: PropTypes.func.isRequired,
+};
+
 export default Button;

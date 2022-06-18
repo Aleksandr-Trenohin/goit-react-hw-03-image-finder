@@ -6,7 +6,6 @@ import { Gallery } from './ImageGallery.styled';
 const ImageGallery = ({ images, onOpenModal }) => {
   return (
     <Gallery>
-      {/* {images.length === 0 && <p>No images found</p>} */}
       {images.map(({ id, webformatURL }) => (
         <ImageGalleryItem
           key={id}
@@ -17,6 +16,16 @@ const ImageGallery = ({ images, onOpenModal }) => {
       ))}
     </Gallery>
   );
+};
+
+ImageGallery.propTypes = {
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+    })
+  ),
+  onOpenModal: PropTypes.func.isRequired,
 };
 
 export default ImageGallery;

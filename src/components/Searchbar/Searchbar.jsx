@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
-
-
 import { BsSearch } from 'react-icons/bs';
+
+import { Notify } from 'notiflix';
 
 import {
   SearchbarContainer,
@@ -12,37 +12,31 @@ import {
   SearchFormInput,
 } from './Searchbar.styled';
 
-
 class Searchbar extends Component {
   state = {
     title: '',
   };
 
-  // handleChange = ({ target }) => {
-  //   const { name, value } = target;
-  //   this.setState({ [name]: value });
-  //   };
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+  };
+
   handleChange = evt => {
     this.setState({ title: evt.currentTarget.value.toLowerCase() });
   };
 
- 
   handleSubmit = evt => {
     const { title } = this.state;
     evt.preventDefault();
 
     if (title.trim() === '') {
-            return alert('Please enter title');
+      Notify.warning('Please enter a title');
     }
 
     this.props.onSubmit(title);
 
     this.setState({ title: '' });
   };
-
-  // reset = () => {
-  //   this.setState({ title: '' });
-  // };
 
   render() {
     const { title } = this.state;
@@ -69,7 +63,5 @@ class Searchbar extends Component {
     );
   }
 }
-
-
 
 export default Searchbar;

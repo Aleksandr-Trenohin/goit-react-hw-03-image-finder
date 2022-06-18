@@ -8,13 +8,14 @@ import { createPortal } from 'react-dom';
 const modalRoot = document.querySelector('#modal__root');
 
 export class Modal extends Component {
-  // static propTypes = {
-  //   onClose: PropTypes.func.isRequired,
-  //   onOpen: PropTypes.shape({
-  //     id: PropTypes.number.isRequired,
-  //     largeImage: PropTypes.string.isRequired,
-  //   }),
-  // };
+  static propTypes = {
+    onClose: PropTypes.func.isRequired,
+    onOpen: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+    }),
+  };
+
   componentDidMount() {
     window.addEventListener('keydown', this.onKeyDown);
   }
@@ -37,7 +38,6 @@ export class Modal extends Component {
 
   render() {
     const { id, largeImageURL } = this.props.onOpen;
-    console.log(id, largeImageURL);
 
     return createPortal(
       <Overlay onClick={this.handleClick}>

@@ -14,11 +14,10 @@ export class App extends Component {
     images: [],
     title: '',
 
-    activePage: 1,
+    activePage: 0,
     totalHits: 0,
 
     status: 'idle',
-    // isLoading: false,
 
     isModalOpen: false,
     modalItem: null,
@@ -31,10 +30,10 @@ export class App extends Component {
     const prevTitle = prevState.title;
     const newTitle = title;
 
-    if (prevTitle !== newTitle) {
+    if (prevTitle !== newTitle && newTitle !== '') {
       this.setState({
         status: 'pending',
-        // isLoading: true,
+
         images: [],
         activePage: 1,
       });
@@ -43,7 +42,6 @@ export class App extends Component {
 
     if (activePage !== prevPage && activePage !== 1) {
       this.setState({
-        // isLoading: true,
         status: 'pending',
       });
       this.fetchImages();
@@ -55,25 +53,22 @@ export class App extends Component {
 
     try {
       const { hits, totalHits } = await getImages(title, activePage);
-      console.log(hits, totalHits);
 
       if (hits.length === 0) {
         this.setState({
           status: 'idle',
-          // isLoading: false,
         });
       }
 
       this.setState(prevState => ({
         images: [...prevState.images, ...hits],
         status: 'resolved',
-        // isLoading: false,
+
         totalHits,
       }));
     } catch (error) {
       this.setState({
         status: 'rejected',
-        // isLoading: false,
       });
     } finally {
     }
@@ -115,7 +110,6 @@ export class App extends Component {
       title,
 
       status,
-      // isLoading,
 
       totalHits,
       activePage,
@@ -132,15 +126,6 @@ export class App extends Component {
           <AppTitle>Oop! Something went wrong! Try again later!</AppTitle>
         )}
 
-        {/* {isLoading ? (
-          <Loader />
-        ) : (
-          <ImageGallery
-            // images={images} onClick={openFullPicture} />
-            images={images}
-            onOpenModal={showModalWindow}
-          />
-        )} */}
         <ImageGallery images={images} onOpenModal={showModalWindow} />
         {status === 'idle' && (
           <AppTitle>Welcome to the world of images!</AppTitle>
@@ -151,7 +136,9 @@ export class App extends Component {
           <AppTitle>'Such {title}' not found!</AppTitle>
         )}
 
-        {totalHits > activePage * 12 && <Button nextPage={nextPage} />}
+        {status === 'resolved' && totalHits > activePage * 12 && (
+          <Button nextPage={nextPage} />
+        )}
 
         {isModalOpen && <Modal onOpen={modalItem} onClose={toggleModal} />}
       </AppContainer>
